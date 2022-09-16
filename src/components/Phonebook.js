@@ -2,7 +2,6 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { nanoid } from 'nanoid';
 import * as yup from 'yup';
 import styled from 'styled-components';
-// import { Input } from 'PhonebookStyled';
 
 const schema = yup.object().shape({
   name: yup.string().required(),
@@ -11,23 +10,16 @@ const schema = yup.object().shape({
 
 const id = nanoid();
 
-const initialValues = {
-  contacts: [],
-  filter: '',
-  name: '',
-  number: '',
-};
-
 const Formfield = styled(Form)`
   display: flex;
   flex-direction: column;
   width: 300px;
+  margin-top: ${p => p.theme.space[4]}px;
 `;
 
 const Label = styled.label`
   font-size: ${p => p.theme.fontSizes.m};
   color: ${p => p.theme.colors.black};
-  margin-bottom: ${p => p.theme.space[2]}px;
 `;
 
 const Input = styled(Field)`
@@ -38,7 +30,8 @@ const Input = styled(Field)`
   border: ${p => p.theme.borders.normal};
   &:focus {
     outline: none;
-    border-color: ${p => p.theme.colors.accent};
+    border: 3px solid;
+    border-color: ${p => p.theme.colors.secondary};
   }
 `;
 
@@ -49,15 +42,23 @@ const Warning = styled(ErrorMessage)`
 const Button = styled.button`
   width: 50%;
   font-size: ${p => p.theme.fontSizes.s};
-  background-color: transparent;
+  background-color: ${p => p.theme.colors.primary};
   border: ${p => p.theme.borders.borderTable};
   border-radius: ${p => p.theme.radii.normal};
+  padding-top: ${p => p.theme.space[2]}px;
+  padding-bottom: ${p => p.theme.space[2]}px;
+  margin-bottom: ${p => p.theme.space[4]}px;
 `;
 
-export const Phonebook = () => {
+export const Phonebook = ({ onSubmit }) => {
+  const initialValues = {
+    name: '',
+    number: '',
+  };
   const handleSubmit = (values, { resetForm }) => {
     values.id = nanoid();
     console.log(values);
+    onSubmit(values);
     resetForm();
   };
 
